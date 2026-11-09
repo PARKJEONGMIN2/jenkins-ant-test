@@ -1,0 +1,24 @@
+<project name="jenkins-ant-test" default="all" basedir=".">
+
+  <property name="mvn.cmd"  value="mvn"/>
+  <property name="dist.dir" value="dist"/>
+
+  <target name="clean">
+    <delete dir="${dist.dir}"/>
+  </target>
+
+  <target name="maven-war">
+    <echo message="=== Maven war build ==="/>
+    <exec executable="${mvn.cmd}" failonerror="true">
+      <arg line="-B clean package"/>
+    </exec>
+  </target>
+
+  <target name="collect" depends="maven-war">
+    <echo message="=== copy war to dist ==="/>
+    <mkdir dir="${dist.dir}"/>
+    <copy file="target/jenkins-ant-test-maven.war" todir="${dist.dir}"/>
+  </target>
+
+  <target name="all" depends="clean, collect"/>
+</project>
